@@ -11,6 +11,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/emirpasic/gods/maps/treemap"
 	"github.com/mitinarseny/HSEProgTechLab1/students"
 	"github.com/mitinarseny/HSEProgTechLab2/search"
 )
@@ -49,14 +50,30 @@ func Benchmark(b *testing.B) {
 					}
 				}
 			})
-			b.Run("Map", func(b *testing.B) {
+			b.Run("HashTableMap", func(b *testing.B) {
 				m := make(map[string]students.Student, len(d))
 				for _, s := range d {
 					m[s.FullName] = s
 				}
 				b.ResetTimer()
 				for i := 0; i < b.N; i++ {
-					_ = m[el.FullName]
+					_, found := m[el.FullName]
+					if !found {
+						b.Errorf("student wih FullName %q was not found, but it is in the map", el.FullName)
+					}
+				}
+			})
+			b.Run("RedBlackTreeMap", func(b *testing.B) {
+				m := treemap.NewWithStringComparator()
+				for _, s := range d {
+					m.Put(s.FullName, s)
+				}
+				b.ResetTimer()
+				for i := 0; i < b.N; i++ {
+					_, found := m.Get(el.FullName)
+					if !found {
+						b.Errorf("student wih FullName %q was not found, but it is in the map", el.FullName)
+					}
 				}
 			})
 		})
