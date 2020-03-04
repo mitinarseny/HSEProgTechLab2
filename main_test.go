@@ -49,6 +49,16 @@ func Benchmark(b *testing.B) {
 					}
 				}
 			})
+			b.Run("Map", func(b *testing.B) {
+				m := make(map[string]students.Student, len(d))
+				for _, s := range d {
+					m[s.FullName] = s
+				}
+				b.ResetTimer()
+				for i := 0; i < b.N; i++ {
+					_ = m[el.FullName]
+				}
+			})
 		})
 	}
 }
