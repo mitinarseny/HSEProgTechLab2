@@ -1,0 +1,20 @@
+files:
+  names:
+  faculties:
+  specialities:
+
+root:
+  type: object
+  fields:
+    fullName:
+      type: string
+      from: names
+    faculty:
+      type: string
+      from: faculties
+    speciality:
+      type: string
+      from: specialities
+    totalPoints:
+      type: int
+      range: [0, 300]
